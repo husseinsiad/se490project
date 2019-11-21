@@ -1,0 +1,148 @@
+<html lang="en">
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SE490_Senior_Project</title>
+    <link href='/stylesheet/custom.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4CTjjoDrr4gNXQyYqVWaCuJ0uOL_2sB8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="temp.js"></script>
+    
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+
+
+</head>
+
+<body>
+
+
+    
+<nav class="navbar navbar-expand-lg navbar-inverse bg-dark">
+  <a class="navbar-brand" href="landing">Real Time Telemetry and Engine Diagnostic</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+     
+      
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      	<a href="/" class="btn btn-outline-primary">Logout</a>
+    </form>
+  </div>
+</nav> 
+         
+    <div class="mr-2 ml-2 mt-2">
+<!--//Main container-->
+<div class="card">
+  <div class="card-body">
+      <div class="row">
+          <div class="col-md-4">
+         <div class="card">
+        <div class="card-header font-weight-bold"> Client Activities
+         </div>
+    <div class="card-body">
+      <div class="list-group" id="list-tab" role="tablist">
+              <a class="list-group-item list-group-item-action active font-weight-bold" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">User Accounts</a>
+              <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Telemetry Data</a>
+              <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Detect Objects</a>
+              <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Diagnostic Trouble Codes</a>
+      </div>
+  </div>
+</div>
+          </div>
+          
+          
+          <div class="col-md-8">
+            <div class="tab-content" id="nav-tabContent">
+              <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+             <div class="card">
+              <h5 class="card-header">Update Accounts</h5>
+              <div class="card-body">
+                <p class="card-text">
+
+         <% editaccount.forEach(function(accounts){ %>
+        <form action="/accounts/<%=accounts.client_id %>?_method=PUT" method="POST">
+              <div class="modal-body">
+           
+          <div class="form-group row">
+            <label for="firstName" class="col-sm-4 col-form-label">First Name</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control"  name="firstname" value="<%= accounts.firstname%>">
+            </div>
+          </div>
+           
+          <div class="form-group row">
+            <label for="lastName" class="col-sm-4 col-form-label">Last Name</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control"  name="lastname" value="<%= accounts.lastname%>">
+            </div>
+          </div>
+           <div class="form-group row">
+            <label for="userName" class="col-sm-4 col-form-label">User Name</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control"  name="username" value="<%= accounts.username%>">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="password" class="col-sm-4 col-form-label">Password</label>
+            <div class="col-sm-8">
+              <input type="password" class="form-control"  name="password" value="<%= accounts.password%>">
+            </div>
+          </div>
+           
+          <div class="form-group row">
+            <label for="email" class="col-sm-4 col-form-label">Email</label>
+            <div class="col-sm-8">
+              <input type="email" class="form-control" name="emailaddress" value="<%= accounts.emailaddress%>">
+            </div>
+          </div>
+          <% }) %>
+          </div>
+              <div class="modal-footer">
+                <a href="/accounts" class="btn btn-secondary">Go back</a>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+          
+          </form>
+                </p>
+             
+              </div>
+            </div>
+                 
+              </div>
+              <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">Under development</div>
+              <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">Under development</div>
+              <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">Under development</div>
+            </div>
+          </div>
+</div>
+  </div>
+</div>
+
+ 
+    </div>
+
+    </div>
+</body>
+
+</html>

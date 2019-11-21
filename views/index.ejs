@@ -1,0 +1,281 @@
+<html lang="en">
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SE490_Senior_Project</title>
+    <link href='/stylesheet/custom.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4CTjjoDrr4gNXQyYqVWaCuJ0uOL_2sB8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="temp.js"></script>
+    
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+
+    <style>
+        .map {
+            height: 490px;
+        }
+
+        #map {
+            height: 490px;
+        }
+
+
+        @media (max-width: 1199px) {
+
+            .map {
+                height: 780px;
+            }
+
+            #map {
+                height: 780px;
+            }
+
+        }
+
+
+
+        @media (max-width: 991px) {
+
+            .map {
+                height: 845px;
+            }
+
+            #map {
+                height: 845px;
+            }
+
+        }
+    </style>
+
+
+</head>
+
+<body onload="drawVehicleSpeed(vehiclespeedcanvas,0,0)">
+
+
+    
+<nav class="navbar navbar-expand-lg navbar-inverse bg-dark">
+  <a class="navbar-brand" href="landing">Real Time Telemetry and Engine Diagnostic</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <!--<li class="nav-item active">-->
+      <!--  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
+      <!--</li>-->
+      <!--<li class="nav-item">-->
+      <!--  <a class="nav-link" href="#">Link</a>-->
+      <!--</li>-->
+      <!--<li class="nav-item dropdown">-->
+      <!--  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+      <!--    Dropdown-->
+      <!--  </a>-->
+      <!--  <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+      <!--    <a class="dropdown-item" href="#">Action</a>-->
+      <!--    <a class="dropdown-item" href="#">Another action</a>-->
+      <!--    <div class="dropdown-divider"></div>-->
+      <!--    <a class="dropdown-item" href="#">Something else here</a>-->
+      <!--  </div>-->
+      <!--</li>-->
+      
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      	<a href="/login" class="btn btn-outline-primary">Logout</a>
+    </form>
+  </div>
+</nav> 
+         
+    <div class="container" style="min-width: 330px" align="center">
+     
+        <br>
+
+        <h3 id="offline" style=" display:block; font-family:century gothic;  color: #F04231" >Vehicle is
+            currently offline. Please check back later</h3>
+
+
+        <div class="row">
+            <div class="col-md-6"
+                style="margin-top: 10px ;margin-bottom: 10px;height: 100% ;padding: 10px;min-width: 330px ;box-shadow: 0 0 1px grey; float: left"
+                align="center">
+                <!--  <h5 style="font-family:century gothic;  color: #F04231">Vehicle is currently offline. Please check back later</h5> -->
+
+                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false">
+                    <div class="carousel-inner map">
+                        <div class="carousel-item active map">
+                            <div id="map" class="map1"></div>
+
+                            <script>
+                                var map = new google.maps.Map(document.getElementById('map'), {
+                                    zoom: 4,
+                                    center: current_location
+                                });
+
+                                marker = new google.maps.Marker({ position: current_location, map: map, icon: image });
+
+                                var controlDiv = document.createElement('div');
+
+                                var controlUI = document.createElement('div');
+                                controlUI.style.backgroundColor = '#fff';
+                                controlUI.style.border = '2px solid #fff';
+                                controlUI.style.borderRadius = '3px';
+                                controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+                                controlUI.style.cursor = 'pointer';
+                                controlUI.style.marginBottom = '9px';
+                                controlUI.style.textAlign = 'center';
+                                controlUI.title = 'Click to recenter the map';
+                                controlDiv.appendChild(controlUI);
+
+                                var controlText = document.createElement('div');
+                                controlText.style.color = 'rgb(240,66,49)';
+                                controlText.style.fontFamily = 'century gothic';
+                                controlText.style.fontSize = '16px';
+                                controlText.style.lineHeight = '38px';
+                                controlText.style.paddingLeft = '5px';
+                                controlText.style.paddingRight = '5px';
+                                controlText.innerHTML = 'Center Map';
+                                controlUI.appendChild(controlText);
+
+                                controlUI.addEventListener('click', function () {
+                                    startCentering()
+                                });
+
+                                controlDiv.index = 1;
+                                map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(controlDiv);
+                            //controlDiv.style.paddingTop = '9px';
+
+                            </script>
+                        </div>
+                        <div class="carousel-item" style="height:100%; margin-top: 10px;">
+                            <iframe src="" frameborder="0" allowfullscreen="true" scrolling="no" height="100%"
+                                width="100%"></iframe>
+                            <!--This is the place that I'm thinking to add the camera stuffs -->
+                            <a href=""
+                                style="padding:2px 0px 4px; display:block; width:345px; font-weight:normal; font-size:10px; text-decoration:underline;"></a>
+                        </div>
+
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev"
+                        style="width:12px">
+                        <img class="original" style="width:20px; height:auto;" src="arrow.png" />
+
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next"
+                        style="width:10px">
+                        <img class="flipped" style="width:20px; height:auto;" src="arrow.png" />
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+            <div class="col-md-6" style="margin-top: 5px; margin-bottom: 10px; padding: 0px; min-width: 330px">
+
+
+
+
+                <div class="row"
+                    style="width:100%; min-width: 330px ;margin-left:0px;margin-right: 10px ;margin-top: 0px; ;box-shadow: 0 0 1px grey;"
+                    align="center">
+                    <div class="col-md-4 box" align="center"
+                        style="border: 5px; background-color: white; min-width: 174px">
+
+
+                        <div id='d2' style=" z-index:1;padding-top: 50px; padding-left: 10px ;">
+                            <canvas class="meter2" id="vehiclespeedcanvas"
+                                style=" width: 170px;padding-left: 10%">Canvas not
+                                available.
+                            </canvas>
+                            <div id='dbar2' style=" margin-top: -20px; " align="center">
+                                <label id="speedometerTele"
+                                    style="font-size: 12px; font-family:century gothic; ">Vehicle
+                                    Speed
+                                    mph</label>
+
+                            </div>
+
+                            <script>
+                                var c = document.getElementById("vehiclespeedcanvas");
+                                var ctx = c.getContext("2d");
+                                //ctx.strokeRect(5, 5, 25, 15);
+                                ctx.scale(0.50, 0.50);
+                                ctx.width = 200;
+                            //ctx.strokeRect(5, 5, 25, 15);
+                            </script>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4 box" align="" style="border: 5px; padding: 0px ;background-color:white">
+                        <div id='dbar' style="">
+
+                            <div class="row" style="padding: 5px">
+
+                                <div class="col-md-12" style="padding-top: 15px; width: 100%; padding: 0px 30px"
+                                    align="center">
+                                    <label id="throttleLabel"
+                                        style="font-size: 12px; width:100px; font-family:century gothic;padding-top: 30px ;margin-left: 10px;">Throttle
+                                        %</label>
+                                    <div id="myProgress" style="margin-top: 10px; width: 100%;" align="left">
+                                        <div id="myBar"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row" style="padding: 5px">
+
+                                <div class="col-md-12 box" style="padding-top: 15px; padding: 0px 30px" align="center">
+                                    <label id="brakeLabel"
+                                        style="font-size: 12px; width:100px; margin-left: 5px; font-family:century gothic;">Brakes
+                                        %</label>
+                                    <div id="brakeProgress" style=" width: 100%" align="left">
+                                        <div id="brakeBar"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <div class="transparent-background">
+    </div>
+
+
+    </div>
+</body>
+
+
+</html>

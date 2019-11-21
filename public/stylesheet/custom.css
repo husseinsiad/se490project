@@ -1,0 +1,207 @@
+.flipped {
+    -webkit-transform: scale(-1, 1);
+     -khtml-transform: scale(-1, 1);
+       -moz-transform: scale(-1, 1);
+        -ms-transform: scale(-1, 1);
+         -o-transform: scale(-1, 1);
+            transform: scale(-1, 1);
+}
+
+.header {
+	width: 100%;
+	padding: 5px;
+	text-align: center;
+	background: #D3D3D3;
+	color: black;
+  font-family: century gothic;
+  }
+
+
+
+#map {
+  height: 380px;
+
+}
+
+
+#myProgress {
+	width: auto;
+	margin: 0 0 20px 0;
+  aligh: left;
+  margin-left: 0%;
+	background-color: #ddd;
+
+}
+
+#myBar {
+	width: 0px;
+	height: 30px;
+  background-color: #333;
+	text-align: center;
+	line-height: 30px;
+	color: white;
+  margin-right:auto;
+}
+#brakeProgress {
+  width: auto;
+	margin: 0 0 20px 0;
+  background-color: #ddd;
+}
+#brakeBar {
+  width: 0px;
+	height: 30px;
+  background-color: #333;
+	text-align: center;
+	line-height: 30px;
+	color: white;
+  margin-right:auto;
+}
+
+#drawTemp {
+	text-align: left;
+	width: 100%;
+	margin: 0 0 25px;
+	padding: 0px;
+}
+#txtSpeed {
+	width: 50%;
+	max-width: 500%;
+	border: 2px solid #333;
+	font-size: 16px;
+	padding: 5px 15px;
+	border-radius: 5px;
+	line-height: 8px;
+	box-sizing: border-box;
+}
+.gauge_input {
+	width: 40px;
+	max-width: 500%;
+	font-size: 3px;
+	padding: 5px 15px;
+	border-radius: 5px;
+	line-height: 8px;
+  margin-top: -110px;
+	margin:10px 0;
+  background-color: #D3D3D3;
+  border:0;
+}
+
+.full_width_cnt {
+	width:80%;
+  height:auto;
+  margin:0px;
+	padding:0px;
+	float:left;
+}
+.half_width_cnt {
+	width:250%;
+	margin:0px;
+	padding:0px;
+	float:left;
+}
+.col_5 {
+	width:2%;
+	margin:0px;
+	padding:0px;
+	float:left;
+}
+.col_7 {
+	width:80%;
+	margin:0px;
+	padding:0 0px 0 0;
+	float:left;
+	box-sizing: border-box;
+}
+.col_7 .col_7 {
+	padding:0 30px 0 0;
+}
+
+label{ text-align:center; margin:0px; padding:0px; line-height:20px;}
+
+    body {
+        color: #999;
+		background: #f5f5f5;
+		font-family: 'Varela Round', sans-serif;
+	}
+	.form-control {
+		box-shadow: none;
+		border-color: #ddd;
+	}
+	.form-control:focus {
+		border-color: #4aba70; 
+	}
+	.login-form {
+        width: 350px;
+		margin: 0 auto;
+		padding: 30px 0;
+	}
+    .login-form form {
+        color: #434343;
+		border-radius: 1px;
+    	margin-bottom: 15px;
+        background: #fff;
+		border: 1px solid #f3f3f3;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+	}
+	.login-form h4 {
+		text-align: center;
+		font-size: 22px;
+        margin-bottom: 20px;
+	}
+    .login-form .avatar {
+        color: #fff;
+		margin: 0 auto 30px;
+        text-align: center;
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+		z-index: 9;
+		background: #4aba70;
+		padding: 15px;
+		box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+	}
+    .login-form .avatar i {
+        font-size: 62px;
+    }
+    .login-form .form-group {
+        margin-bottom: 20px;
+    }
+	.login-form .form-control, .login-form .btn {
+		min-height: 40px;
+		border-radius: 2px; 
+        transition: all 0.5s;
+	}
+	.login-form .close {
+        position: absolute;
+		top: 15px;
+		right: 15px;
+	}
+	.login-form .btn {
+		background: #4aba70;
+		border: none;
+		line-height: normal;
+	}
+	.login-form .btn:hover, .login-form .btn:focus {
+		background: #42ae68;
+	}
+    .login-form .checkbox-inline {
+        float: left;
+    }
+    .login-form input[type="checkbox"] {
+        margin-top: 2px;
+    }
+    .login-form .forgot-link {
+        float: right;
+    }
+    .login-form .small {
+        font-size: 13px;
+    }
+    .login-form a {
+        color: #4aba70;
+    }
+    
+    
+    
+
+

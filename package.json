@@ -1,19 +1,27 @@
 {
-  "name": "se490project",
+  "name": "senior-project_se490",
   "version": "1.0.0",
   "description": "Graduation project",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/husseinsiad/se490project.git"
-  },
-  "author": "Hussein Siad",
+  "author": "SE490",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/husseinsiad/se490project/issues"
-  },
-  "homepage": "https://github.com/husseinsiad/se490project#readme"
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.4",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "firebase": "^7.2.2",
+    "firebase-admin": "^8.7.0",
+    "method-override": "^3.0.0",
+    "middleware": "^1.0.0",
+    "mysql": "^2.17.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
+  }
 }
