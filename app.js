@@ -2,9 +2,10 @@
         bodyparser      = require("body-parser"),
         methodoverride  = require("method-override"),
         admin           = require("firebase-admin"),
-        flash = require('connect-flash'),
-        session = require('express-session'),
-        firebase = require("firebase");
+        flash           = require('connect-flash'),
+        cookieParser    = require('cookie-parser'),
+        session         = require('express-session'),
+        firebase        = require("firebase");
         
  var  serviceAccount  = require('./se490-1b878-firebase-adminsdk-r9vht-96968a906a');
            admin.initializeApp({
@@ -29,6 +30,8 @@
       };
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
+    //   firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+    //   firebase.auth.Auth.Persistence.LOCAL;
       
   //SETUP UTILITIES
  // ================
@@ -39,7 +42,7 @@
     app.use(methodoverride("_method"));
     app.use("/static", express.static('./static/'));
     app.use(express.static(__dirname + "/public"));
-    
+    app.use(cookieParser());
     app.use(session({ cookie: { maxAge: 60000 }, 
                   secret: 'woot',
                   resave: false, 
@@ -47,31 +50,33 @@
     
     app.use(flash());
     app.use(function(req, res, next){
+        // res.locals.currentUser=firebase.auth().currentUser;
+        res.locals.currentUser = req.flash('currentUser');
         res.locals.success = req.flash('success');
-        res.locals.errors = req.flash('error');
+        res.locals.error = req.flash('error');
         next();
     });
 
 
 //Authentication Middleware 
-        function isAuthenticated(req,res,next){
-            var user = firebase.auth().currentUser;
-              if (user !== null) {
-                req.user = user;
-                next();
-              } else {
-                res.redirect('/login');
-              }
+    function isAuthenticated(req,res,next){
+        var user = firebase.auth().currentUser;
+          if (user !== null) {
+            req.user = user;
+            next();
+          } else {
+          req.flash('error',"Please Login First!!");
+          res.redirect('/login');
+          }
         }
-      //ROUTE
-     //===================
+     
      //Show Home Page 
     // --------------
    app.get("/",function(req,res){
           	res.render("login");
     });
+    
     app.get("/home",isAuthenticated,function(req,res){
-       
           	res.render("home");
     });
     
@@ -79,65 +84,67 @@
      app.get("/blank",isAuthenticated,function(req,res){
          //Get Current UserID
           var userid = firebase.auth().currentUser.uid;
-          
-            var userRef=db.ref("/Users/"+userid+"/DTC/DTC Code");
+          var userRef=db.ref("/Users/"+userid+"/DTC/DTC Code");
           userRef.on("value",function(snapshot){
-         
-            var data=JSON.stringify(snapshot.val)
-            var testData = snapshot.val()
-            testData = testData.substr(2,testData.length - 4)
-            testData = testData.split('), (')
-            var testDTC = testData[0].split(', ')
-          
-            //var keys=Object.keys(snapshot.val());
-            console.log(testData);
-            
-             
-          	res.render("black",{ code_num:testDTC[0], data:testDTC[1] });
+        var data=JSON.stringify(snapshot.val)
+        var testData = snapshot.val()
+        testData = testData.substr(2,testData.length - 4)
+        testData = testData.split('), (')
+        var testDTC = testData[0].split(', ')
+      	res.render("black",{ code_num:testDTC[0], data:testDTC[1] });
           	
-      })
+             })
     });
     
-    // List All Users
-    
-       app.get("/accounts",isAuthenticated,function(req,res){
-      var userRef=db.ref("/Users");
-      userRef.on("value",function(snapshot){
-        //   console.log(snapshot.val());
-          	res.render("accounts",{ users:snapshot.val() });
-      })
-    
-    });
     
      // Show CarMD page
-    
        app.get("/carmd",isAuthenticated,function(req,res){
       
             res.render("carmd");
     });
     
+    //AUTHENTICATION ROUTE
     //Show Login Page
     // --------------
       app.get("/login", function(req,res){
     	res.render("login");
-    });
+         });
     //Check login 
     // -----------
     app.post("/login",function(req,res){
         var email = req.body.email;
         var password = req.body.password;
-      
          firebase.auth().signInWithEmailAndPassword(email, password)
         .then(function(user){
-           // console.log(user)
+              //Get Current UserID
+          var userid = firebase.auth().currentUser.uid;
+          // Get User Information
+        //   console.log(userid);
+            var userRef=db.ref("/Users/"+userid);
+            userRef.on("value",function(snapshot){
+            var userData=snapshot.val();
+           
+             req.flash('currentUser',userData.firstname)
+            //  req.flash('currentUser',"HUSSEIN");
            	res.redirect("/home");
+      })
+      
         }).catch(function(error){
              var errorMessage = error.message;
              req.flash('error', errorMessage);
-             console.log(errorMessage);
+             //console.log(errorMessage);
              res.redirect("/login");
         })
     
+    });
+    
+    
+     //Show Logout Page
+    // ---------------
+     app.get("/logout",function(req,res){
+         
+         req.flash("success","You Logged Out!!");
+    	res.redirect("/login");
     });
     
     //Show Signup Page
@@ -152,7 +159,7 @@
         var firstname = req.body.firstname;
         var lastname = req.body.lastname;
         var password = req.body.password;
-        
+      
          firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(function(user){
            // console.log(user)
@@ -165,21 +172,28 @@
          // console.log(clientRef);
         var clientData = {firstname:req.body.firstname, lastname:req.body.lastname};
        
-           clientRef.set(clientData,function(user){
-            if(user){
-            res.redirect("/login");
+           clientRef.set(clientData,function(error,user){
+            if(error){
+                 var errorMessage = error.message;
+                req.flash("error",errorMessage);
+            	res.redirect("signup");
+                
             }
             else{
-                	res.render("signup");
+                req.flash("currentUser",req.body.firstname)
+                 res.redirect("/home");
+                
             }
         })
         
           // 	res.render("login");
         }).catch(function(error){
              var errorMessage = error.message;
-             res.render("signup",{error:errorMessage});
+             req.flash("error",errorMessage);
+             res.redirect("/signup");
             
         })
+      
     });
     
     //Forget Password
